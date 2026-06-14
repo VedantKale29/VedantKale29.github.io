@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedant Kale · AI/ML Engineer</title>
+<meta name="description" content="Portfolio of Vedant Kale — AI/ML & Data Engineer. Federated learning, MLOps, real-time data platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e14; --surface:#11161f; --surface2:#161d29; --border:#1f2733;
+  --text:#e6edf3; --muted:#8b949e; --dim:#586069;
+  --purple:#7f77dd; --teal:#5dcaa5; --coral:#f0997b; --pink:#ed93b1; --amber:#fac775;
+  --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+::selection{background:rgba(127,119,221,.35)}
+a{color:var(--teal);text-decoration:none}
+section{max-width:1000px;margin:0 auto;padding:90px 24px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+  padding:14px 28px;background:rgba(10,14,20,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .logo{font-family:var(--mono);font-size:15px;color:var(--text)}
+nav .logo span{color:var(--purple)}
+nav ul{display:flex;gap:22px;list-style:none}
+nav ul a{font-family:var(--mono);font-size:13px;color:var(--muted);transition:color .2s}
+nav ul a:hover{color:var(--teal)}
+nav ul a .idx{color:var(--purple);margin-right:3px}
+
+#hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;max-width:none;padding:0}
+#neural-bg{position:absolute;inset:0;width:100%;height:100%}
+.hero-inner{position:relative;text-align:center;pointer-events:none;padding:0 20px}
+.hero-inner .pre{font-family:var(--mono);font-size:14px;color:var(--teal);margin-bottom:14px}
+.hero-inner h1{font-size:clamp(40px,7vw,72px);font-weight:600;letter-spacing:-1px}
+.hero-inner h1 .accent{color:var(--purple)}
+.hero-inner .typed-line{font-family:var(--mono);font-size:clamp(14px,2.2vw,19px);color:var(--muted);margin-top:14px;min-height:30px}
+.hero-inner .typed-line .cursor{display:inline-block;width:9px;background:var(--teal);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero-links{margin-top:30px;display:flex;gap:14px;justify-content:center;pointer-events:auto}
+.hero-links a{font-family:var(--mono);font-size:13px;color:var(--text);border:1px solid var(--border);background:rgba(17,22,31,.7);
+  padding:9px 18px;border-radius:8px;transition:.2s}
+.hero-links a:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
+.scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--dim);animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,8px)}}
+
+.sec-head{font-family:var(--mono);font-size:14px;color:var(--purple);margin-bottom:6px}
+.sec-title{font-size:30px;font-weight:600;margin-bottom:36px}
+.sec-title .hash{color:var(--dim);font-weight:400}
+
+.cell{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:22px;overflow:hidden}
+.cell-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.cell-bar .dots{display:flex;gap:6px}
+.cell-bar .dots i{width:10px;height:10px;border-radius:50%;background:#2c3442;display:block}
+.cell-bar .fname{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.cell-run{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--teal);background:none;border:1px solid var(--border);
+  border-radius:6px;padding:4px 12px;cursor:pointer;transition:.2s}
+.cell-run:hover{border-color:var(--teal)}
+.cell-in{display:flex;gap:12px;padding:16px;font-family:var(--mono);font-size:13.5px}
+.cell-in .tag{color:var(--purple);white-space:nowrap}
+.cell-in code{color:var(--text);white-space:pre-wrap}
+.cell-in .kw{color:var(--coral)} .cell-in .str{color:var(--teal)} .cell-in .fn{color:var(--amber)}
+.cell-out{padding:0 16px 18px 16px;font-family:var(--mono);font-size:13.5px;color:var(--teal);white-space:pre-wrap;min-height:20px}
+.cell-out .otag{color:var(--pink)}
+
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.skill-card h3{font-family:var(--mono);font-size:14px;color:var(--coral);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:5px 10px;transition:.2s;cursor:default}
+.chip:hover{color:var(--purple);border-color:var(--purple);transform:translateY(-2px)}
+
+.exp-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:26px;overflow:hidden;transition:border-color .25s}
+.exp-card:hover{border-color:#3a4556}
+.exp-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.exp-head .run-id{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.exp-head .pname{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text)}
+.status{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;margin-left:auto}
+.status.live{color:var(--teal);border:1px solid rgba(93,202,165,.4)}
+.status.live::before{content:'●';margin-right:6px;animation:blink 1.4s steps(1) infinite}
+.status.done{color:var(--muted);border:1px solid var(--border)}
+.status.done::before{content:'✓';margin-right:6px;color:var(--teal)}
+.exp-body{display:grid;grid-template-columns:1fr 230px;gap:0}
+.exp-info{padding:20px}
+.exp-info .sub{font-size:14px;color:var(--muted);margin-bottom:14px}
+.metrics{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:16px}
+.metric .val{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--purple)}
+.metric .lbl{font-size:11.5px;color:var(--dim);font-family:var(--mono)}
+.exp-chart{border-left:1px solid var(--border);padding:14px;display:flex;flex-direction:column;justify-content:center}
+.exp-chart canvas{width:100%;height:110px}
+.exp-chart .cap{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;margin-top:6px}
+.exp-toggle{width:100%;background:none;border:none;border-top:1px solid var(--border);color:var(--muted);
+  font-family:var(--mono);font-size:12.5px;padding:11px;cursor:pointer;transition:.2s}
+.exp-toggle:hover{color:var(--teal);background:var(--surface2)}
+.exp-detail{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.exp-detail.open{max-height:420px}
+.exp-detail ul{list-style:none;padding:18px 22px;border-top:1px dashed var(--border)}
+.exp-detail li{font-size:13.5px;color:var(--muted);padding:5px 0 5px 20px;position:relative}
+.exp-detail li::before{content:'▸';position:absolute;left:0;color:var(--purple)}
+@media(max-width:720px){.exp-body{grid-template-columns:1fr}.exp-chart{border-left:none;border-top:1px solid var(--border)}}
+
+.ckpt-list{position:relative;margin-left:10px;padding-left:28px;border-left:1px dashed #2c3442}
+.ckpt{position:relative;margin-bottom:26px}
+.ckpt::before{content:'';position:absolute;left:-34px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--purple)}
+.ckpt .ck-tag{font-family:var(--mono);font-size:11.5px;color:var(--teal)}
+.ckpt h3{font-size:16px;font-weight:600;margin:2px 0}
+.ckpt p{font-size:13.5px;color:var(--muted)}
+
+#terminal{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-family:var(--mono)}
+#term-out{padding:18px;font-size:13.5px;min-height:150px;white-space:pre-wrap;color:var(--muted)}
+#term-out .ok{color:var(--teal)} #term-out .hl{color:var(--purple)}
+.term-in{display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);padding:12px 18px}
+.term-in .ps{color:var(--teal);font-size:13.5px}
+.term-in input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:13.5px}
+.term-hints{display:flex;gap:8px;padding:0 18px 14px;flex-wrap:wrap}
+.term-hints button{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer}
+.term-hints button:hover{color:var(--teal);border-color:var(--teal)}
+
+footer{text-align:center;padding:34px 20px;border-top:1px solid var(--border);font-family:var(--mono);font-size:12px;color:var(--dim)}
+footer .heart{color:var(--pink)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.reveal.vis{opacity:1;transform:none}
+@media(max-width:640px){nav ul{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">vedant<span>@</span>portfolio<span>:~$</span></div>
+  <ul>
+    <li><a href="#about"><span class="idx">01.</span>about</a></li>
+    <li><a href="#skills"><span class="idx">02.</span>skills</a></li>
+    <li><a href="#experiments"><span class="idx">03.</span>experiments</a></li>
+    <li><a href="#checkpoints"><span class="idx">04.</span>checkpoints</a></li>
+    <li><a href="#contact"><span class="idx">05.</span>contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <canvas id="neural-bg"></canvas>
+  <div class="hero-inner">
+    <p class="pre">&gt; model loaded successfully _</p>
+    <h1>Vedant <span class="accent">Kale</span></h1>
+    <p class="typed-line"><span id="typed"></span><span class="cursor">&nbsp;</span></p>
+    <div class="hero-links">
+      <a href="https://github.com/VedantKale29" target="_blank" rel="noopener">github</a>
+      <a href="https://www.linkedin.com/in/vedant-kale-b1836a25a/" target="_blank" rel="noopener">linkedin</a>
+      <a href="https://leetcode.com/u/vedantukale29/" target="_blank" rel="noopener">leetcode</a>
+      <a href="mailto:vedantukale29@gmail.com">email</a>
+    </div>
+  </div>
+  <div class="scroll-cue">▼ scroll to explore</div>
+</section>
+
+<section id="about" class="reveal">
+  <p class="sec-head">01.</p>
+  <h2 class="sec-title"><span class="hash">#</span> about_me.ipynb</h2>
+  <div class="cell" data-autorun>
+    <div class="cell-bar"><div class="dots"><i></i><i></i><i></i></div><span class="fname">about_vedant.ipynb</span>
+      <button class="cell-run" aria-label="Run cell">▶ run</button></div>
+    <div class="cell-in"><span class="tag">In [1]:</span><code><span class="kw">from</span> mumbai <span class="kw">import</span> Vedant
+<span class="fn">print</span>(Vedant.<span class="fn">summary</span>())</code></div>
+    <div class="cell-out" data-text="Out[1]:
+  Final-year Computer Engineering student @ VCET Mumbai (CGPA 8.2/10)
+  Building at the intersection of machine learning and data engineering —
+  federated learning systems, real-time data platforms, and production
+  MLOps pipelines. Copyright holder (ARNAV, FALCON) · 2x IEEE papers.
+  Currently training: FALCON — privacy-preserving FL for medical imaging."></div>
+  </div>
+  <div class="cell" data-autorun>
+    <div class="cell-bar"><div class="dots"><i></i><i></i><i></i></div><span class="fname">education.ipynb</span>
+      <button class="cell-run" aria-label="Run cell">▶ run</button></div>
+    <div class="cell-in"><span class="tag">In [2]:</span><code>Vedant.education</code></div>
+    <div class="cell-out" data-text="Out[2]:
+  B.E. Computer Engineering · Vidyavardhini College of Engineering
+  and Technology, Mumbai · Nov 2022 – May 2026 · CGPA 8.2/10
+  coursework = ['Data Science', 'Machine Learning', 'Algorithms',
+                'Data Structures', 'Software Engineering']"></div>
+  </div>
+</section>
+
+<section id="skills" class="reveal">
+  <p class="sec-head">02.</p>
+  <h2 class="sec-title"><span class="hash">#</span> import skills</h2>
+  <div class="skill-groups">
+    <div class="skill-card"><h3>// languages &amp; databases</h3>
+      <div class="chips"><span class="chip">Python</span><span class="chip">R</span><span class="chip">Java</span><span class="chip">SQL</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">DynamoDB</span></div></div>
+    <div class="skill-card"><h3>// ml &amp; mlops</h3>
+      <div class="chips"><span class="chip">PyTorch</span><span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">MLflow</span><span class="chip">DVC</span><span class="chip">DagsHub</span><span class="chip">Grad-CAM</span><span class="chip">Federated Learning</span><span class="chip">Differential Privacy</span></div></div>
+    <div class="skill-card"><h3>// big data &amp; cloud</h3>
+      <div class="chips"><span class="chip">AWS</span><span class="chip">PySpark</span><span class="chip">Kafka</span><span class="chip">Hadoop</span><span class="chip">Databricks</span><span class="chip">Snowflake</span><span class="chip">Airflow</span><span class="chip">dbt</span><span class="chip">Terraform</span></div></div>
+    <div class="skill-card"><h3>// tools &amp; frameworks</h3>
+      <div class="chips"><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">GitHub Actions</span><span class="chip">Grafana</span><span class="chip">Power BI</span><span class="chip">Flask</span><span class="chip">Django</span><span class="chip">REST APIs</span><span class="chip">Unity</span><span class="chip">Blender</span></div></div>
+  </div>
+</section>
+
+<section id="experiments" class="reveal">
+  <p class="sec-head">03.</p>
+  <h2 class="sec-title"><span class="hash">#</span> experiment_lab/</h2>
+
+  <div class="exp-card">
+    <div class="exp-head"><span class="run-id">run_001</span><span class="pname">FALCON</span><span class="status live">training</span></div>
+    <div class="exp-body">
+      <div class="exp-info">
+        <p class="sub">Privacy-preserving federated learning framework for medical anomaly detection — differential privacy + secure aggregation, HIPAA-compliant. Nov 2025 – Present.</p>
+        <div class="metrics">
+          <div class="metric"><div class="val" data-count="97.91" data-suffix="%">0</div><div class="lbl">accuracy</div></div>
+          <div class="metric"><div class="val" data-count="0.98" data-dec="2">0</div><div class="lbl">f1-score</div></div>
+          <div class="metric"><div class="val" data-count="2.9" data-dec="1" data-prefix="ε≈">0</div><div class="lbl">privacy budget</div></div>
+          <div class="metric"><div class="val" data-count="15" data-prefix="−" data-suffix="%">0</div><div class="lbl">training overhead</div></div>
+        </div>
+        <div class="chips"><span class="chip">PyTorch</span><span class="chip">gRPC</span><span class="chip">FedAvg</span><span class="chip">Differential Privacy</span><span class="chip">Grad-CAM</span><span class="chip">CNN + Autoencoder</span></div>
+      </div>
+      <div class="exp-chart"><canvas class="loss-curve" width="220" height="110"></canvas><p class="cap">loss vs. epochs</p></div>
+    </div>
+    <button class="exp-toggle">▾ show training log</button>
+    <div class="exp-detail"><ul>
+      <li>Federated Learning framework with Differential Privacy and Secure Aggregation for medical anomaly detection — 97.91% accuracy, 0.98 F1 with HIPAA compliance.</li>
+      <li>CNN and Autoencoder models with PyTorch, gRPC and FedAvg, maintaining ε ≈ 2.9 privacy budget across distributed healthcare institutions without data sharing.</li>
+      <li>Optimized non-IID convergence via adaptive aggregation and uncertainty-aware weighting — better generalization, 15% less training overhead.</li>
+      <li>Real-time Grad-CAM heatmaps for radiologist validation and diagnostic transparency.</li>
+    </ul></div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-head"><span class="run-id">run_002</span><span class="pname">REAL-TIME FINANCIAL DATA PLATFORM</span><span class="status done">converged</span></div>
+    <div class="exp-body">
+      <div class="exp-info">
+        <p class="sub">Enterprise real-time data platform on AWS — streaming ingestion, lakehouse architecture, ML inference in-stream. Nov – Dec 2025.</p>
+        <div class="metrics">
+          <div class="metric"><div class="val" data-count="5" data-suffix="M+">0</div><div class="lbl">events / day</div></div>
+          <div class="metric"><div class="val" data-count="2" data-prefix="~" data-suffix="s">0</div><div class="lbl">micro-batch latency</div></div>
+          <div class="metric"><div class="val" data-count="100" data-suffix="GB+">0</div><div class="lbl">datasets processed</div></div>
+        </div>
+        <div class="chips"><span class="chip">AWS MSK</span><span class="chip">EMR Spark</span><span class="chip">PySpark</span><span class="chip">Snowflake</span><span class="chip">dbt</span><span class="chip">Airflow</span><span class="chip">Terraform</span><span class="chip">SageMaker</span></div>
+      </div>
+      <div class="exp-chart"><canvas class="loss-curve" width="220" height="110"></canvas><p class="cap">throughput, stabilized</p></div>
+    </div>
+    <button class="exp-toggle">▾ show training log</button>
+    <div class="exp-detail"><ul>
+      <li>Real-time AWS platform with MSK, EMR Spark and an S3 data lake (raw/processed/curated) — 5M+ events/day at ~2s micro-batch latency.</li>
+      <li>PySpark ETL and feature pipelines on 100GB+ datasets; idempotent streaming with DynamoDB TTL-based deduplication.</li>
+      <li>Lambda/SageMaker inference inside Spark Streaming; ELT to Snowflake via Snowpipe + dbt star-schema marts.</li>
+      <li>Orchestration with Airflow, Step Functions, Glue, EMR; Terraform IaC, IAM least privilege, KMS encryption, VPC endpoints, Lake Formation governance, CloudWatch monitoring.</li>
+    </ul></div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-head"><span class="run-id">run_003</span><span class="pname">NETWORK SECURITY ML SYSTEM</span><span class="status done">converged</span></div>
+    <div class="exp-body">
+      <div class="exp-info">
+        <p class="sub">Production-grade end-to-end MLOps pipeline with self-triggered retraining and full experiment traceability. Aug – Oct 2025.</p>
+        <div class="metrics">
+          <div class="metric"><div class="val" data-count="90" data-prefix="−" data-suffix="%">0</div><div class="lbl">training failures</div></div>
+          <div class="metric"><div class="val" data-count="100" data-suffix="%">0</div><div class="lbl">reproducibility</div></div>
+          <div class="metric"><div class="val" data-count="70" data-prefix="~" data-suffix="%">0</div><div class="lbl">faster deploys</div></div>
+        </div>
+        <div class="chips"><span class="chip">MLflow</span><span class="chip">DagsHub</span><span class="chip">Docker</span><span class="chip">AWS EC2</span><span class="chip">ECR</span><span class="chip">GitHub Actions</span><span class="chip">Drift Detection</span></div>
+      </div>
+      <div class="exp-chart"><canvas class="loss-curve" width="220" height="110"></canvas><p class="cap">loss vs. epochs</p></div>
+    </div>
+    <button class="exp-toggle">▾ show training log</button>
+    <div class="exp-detail"><ul>
+      <li>End-to-end MLOps pipeline: ingestion → validation → transformation → training → deployment, with self-triggered retraining and artifact management.</li>
+      <li>MLflow + DagsHub for experiment tracking, model versioning and dataset lineage — 100% reproducibility.</li>
+      <li>Automated data validation and drift detection (schema enforcement, statistical checks) — ~90% fewer data-related training failures.</li>
+      <li>Dockerized deployment on AWS EC2 via ECR and GitHub Actions CI/CD — ~70% faster, more reliable releases.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="checkpoints" class="reveal">
+  <p class="sec-head">04.</p>
+  <h2 class="sec-title"><span class="hash">#</span> saved_checkpoints/</h2>
+  <div class="ckpt-list">
+    <div class="ckpt"><span class="ck-tag">checkpoint · publications</span>
+      <h3>2x IEEE research papers presented</h3>
+      <p>Presented two research papers at IEEE conferences.</p></div>
+    <div class="ckpt"><span class="ck-tag">checkpoint · copyright</span>
+      <h3>Copyright holder — ARNAV &amp; FALCON</h3>
+      <p>Registered copyrights for two original software systems.</p></div>
+    <div class="ckpt"><span class="ck-tag">checkpoint · team solecthon</span>
+      <h3>Autonomous car development · 2x national wins</h3>
+      <p>Computer-vision path planning + multi-sensor fusion (LiDAR, radar, camera); contributed to 5% reduction in path deviation and two national-level competition wins.</p></div>
+    <div class="ckpt"><span class="ck-tag">checkpoint · certifications</span>
+      <h3>Machine Learning A-Z &amp; Complete MLOps Bootcamp</h3>
+      <p>Udemy, 2025 — <a href="https://drive.google.com/file/d/1v9mdN2aYa3xi01-swCjHd8OMB0J3MrD4/view?usp=sharing" target="_blank" rel="noopener">ML A-Z certificate</a> · <a href="https://drive.google.com/file/d/18LwGHuvS35PG2fp-IkS4ioeFhUZiRS_U/view?usp=sharing" target="_blank" rel="noopener">MLOps certificate</a></p></div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <p class="sec-head">05.</p>
+  <h2 class="sec-title"><span class="hash">#</span> ./contact --vedant</h2>
+  <div id="terminal">
+    <div id="term-out">Welcome to vedant-shell v1.0 — type <span class="hl">help</span> or click a command below.
+</div>
+    <div class="term-in"><span class="ps">vedant@portfolio:~$</span><input id="term-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input"></div>
+    <div class="term-hints">
+      <button data-cmd="help">help</button><button data-cmd="contact">contact</button>
+      <button data-cmd="resume">resume</button><button data-cmd="skills --top">skills --top</button>
+      <button data-cmd="sudo hire vedant">sudo hire vedant</button>
+    </div>
+  </div>
+</section>
+
+<footer>designed &amp; built by Vedant Kale <span class="heart">♥</span> · trained on curiosity, deployed with passion · © 2026</footer>
+
+<script>
+(function(){
+"use strict";
+
+var cv=document.getElementById('neural-bg'),ctx=cv.getContext('2d'),nodes=[],mx=-9e3,my=-9e3,W,H;
+function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+resize();window.addEventListener('resize',resize);
+var COUNT=Math.min(90,Math.floor(window.innerWidth/14));
+for(var i=0;i<COUNT;i++)nodes.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+  vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45});
+window.addEventListener('mousemove',function(e){var r=cv.getBoundingClientRect();
+  if(e.clientY<r.bottom&&e.clientY>r.top){mx=e.clientX-r.left;my=e.clientY-r.top;}else{mx=-9e3;my=-9e3;}});
+function tick(){
+  ctx.clearRect(0,0,W,H);
+  var i,j,a,b,d;
+  for(i=0;i<nodes.length;i++){a=nodes[i];a.x+=a.vx;a.y+=a.vy;
+    if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1;}
+  for(i=0;i<nodes.length;i++)for(j=i+1;j<nodes.length;j++){
+    a=nodes[i];b=nodes[j];d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<130){ctx.strokeStyle='rgba(127,119,221,'+(.4*(1-d/130)).toFixed(3)+')';
+      ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
+  for(i=0;i<nodes.length;i++){a=nodes[i];d=Math.hypot(a.x-mx,a.y-my);var fire=d<110;
+    ctx.fillStyle=fire?'#5dcaa5':'rgba(127,119,221,.85)';
+    ctx.beginPath();ctx.arc(a.x,a.y,fire?3.4:2.1,0,7);ctx.fill();
+    if(fire){a.vx+=(a.x-mx)*.0011;a.vy+=(a.y-my)*.0011;}}
+  requestAnimationFrame(tick);}
+tick();
+
+var phrases=['AI / ML Engineer','Data Engineer @ scale','Federated Learning researcher','MLOps pipeline architect','IEEE author · 2x papers'];
+var tEl=document.getElementById('typed'),pi=0,ci=0,del=false;
+function type(){
+  var p=phrases[pi];
+  tEl.textContent=p.slice(0,ci);
+  if(!del){if(++ci>p.length){del=true;return setTimeout(type,1800);}}
+  else{if(--ci===0){del=false;pi=(pi+1)%phrases.length;}}
+  setTimeout(type,del?34:74);}
+type();
+
+document.querySelectorAll('.reveal').forEach(function(s){
+  new IntersectionObserver(function(en,o){if(en[0].isIntersecting){s.classList.add('vis');o.disconnect();}},{threshold:.12}).observe(s);});
+
+function typeOut(el,txt,done){el.textContent='';var i=0;
+  var t=setInterval(function(){el.textContent=txt.slice(0,++i);
+    if(i>=txt.length){clearInterval(t);if(done)done();}},9);}
+document.querySelectorAll('.cell').forEach(function(cell){
+  var out=cell.querySelector('.cell-out'),txt=out.getAttribute('data-text'),ran=false;
+  function run(){ran=true;typeOut(out,txt);}
+  cell.querySelector('.cell-run').addEventListener('click',run);
+  new IntersectionObserver(function(en,o){if(en[0].isIntersecting){if(!ran)run();o.disconnect();}},{threshold:.4}).observe(cell);});
+
+function animCount(el){
+  var target=parseFloat(el.getAttribute('data-count')),dec=parseInt(el.getAttribute('data-dec')||'0',10),
+      pre=el.getAttribute('data-prefix')||'',suf=el.getAttribute('data-suffix')||'',
+      t0=null,DUR=1400;
+  if(!dec&&String(target).indexOf('.')>-1)dec=2;
+  function fr(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/DUR);k=1-Math.pow(1-k,3);
+    el.textContent=pre+(target*k).toFixed(dec)+suf;
+    if(k<1)requestAnimationFrame(fr);}
+  requestAnimationFrame(fr);}
+function drawLoss(c){
+  var x=c.getContext('2d'),w=c.width,h=c.height,pts=[],n=46,i;
+  for(i=0;i<n;i++){var t=i/(n-1);
+    pts.push({x:10+t*(w-20),y:12+(h-30)*(Math.exp(-3.1*t))+Math.sin(i*2.1)*3.5*(1-t)+Math.random()*2});}
+  var prog=0;
+  function fr(){x.clearRect(0,0,w,h);
+    x.strokeStyle='rgba(255,255,255,.07)';x.lineWidth=1;
+    for(var g=0;g<=4;g++){x.beginPath();x.moveTo(10,12+g*(h-30)/4);x.lineTo(w-10,12+g*(h-30)/4);x.stroke();}
+    x.strokeStyle='#5dcaa5';x.lineWidth=2;x.beginPath();
+    var m=Math.floor(prog*pts.length);
+    for(var k=0;k<m;k++){k===0?x.moveTo(pts[k].x,pts[k].y):x.lineTo(pts[k].x,pts[k].y);}
+    x.stroke();
+    if(m>0){var lp=pts[m-1];x.fillStyle='#7f77dd';x.beginPath();x.arc(lp.x,lp.y,3,0,7);x.fill();}
+    prog+=.016;if(prog<=1)requestAnimationFrame(fr);}
+  fr();}
+document.querySelectorAll('.exp-card').forEach(function(card){
+  new IntersectionObserver(function(en,o){if(en[0].isIntersecting){
+    card.querySelectorAll('.metric .val').forEach(animCount);
+    drawLoss(card.querySelector('.loss-curve'));o.disconnect();}},{threshold:.3}).observe(card);
+  var tg=card.querySelector('.exp-toggle'),dt=card.querySelector('.exp-detail');
+  tg.addEventListener('click',function(){var open=dt.classList.toggle('open');
+    tg.textContent=open?'▴ hide training log':'▾ show training log';});});
+
+var tout=document.getElementById('term-out'),tin=document.getElementById('term-input');
+var CMDS={
+  help:'available commands:\n  contact        — how to reach me\n  resume         — education + highlights\n  skills --top   — most-used stack\n  sudo hire vedant — try it ;)\n  clear          — clear terminal',
+  contact:'email    → vedantukale29@gmail.com\nphone    → +91 7083527144\ngithub   → github.com/VedantKale29\nlinkedin → linkedin.com/in/vedant-kale-b1836a25a\nleetcode → leetcode.com/u/vedantukale29',
+  resume:'Vedant Umesh Kale — B.E. Computer Engineering, VCET Mumbai (2022–2026, CGPA 8.2)\n· FALCON: federated learning for medical imaging (97.91% acc)\n· Real-time AWS data platform (5M+ events/day)\n· End-to-end MLOps system (~70% faster deploys)\n· 2x IEEE papers · 2x copyrights · 2x national autonomous-car wins',
+  'skills --top':"['Python', 'PyTorch', 'PySpark', 'AWS', 'Kafka', 'MLflow', 'Airflow', 'Terraform', 'Docker', 'Snowflake']",
+  'sudo hire vedant':'[sudo] permission granted ✓\ninitializing onboarding... done\n> great choice. inbox: vedantukale29@gmail.com'};
+function termPrint(cmd){
+  if(cmd==='clear'){tout.innerHTML='';return;}
+  var res=CMDS[cmd]||("command not found: "+cmd+"\ntype 'help' for available commands");
+  tout.innerHTML+='<span class="hl">vedant@portfolio:~$</span> '+cmd.replace(/</g,'&lt;')+'\n<span class="ok">'+res.replace(/</g,'&lt;')+'</span>\n\n';
+  tout.scrollTop=tout.scrollHeight;}
+tin.addEventListener('keydown',function(e){if(e.key==='Enter'&&tin.value.trim()){termPrint(tin.value.trim().toLowerCase());tin.value='';}});
+document.querySelectorAll('.term-hints button').forEach(function(b){
+  b.addEventListener('click',function(){termPrint(b.getAttribute('data-cmd'));});});
+})();
+</script>
+</body>
+</html>
