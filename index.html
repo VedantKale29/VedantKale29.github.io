@@ -122,20 +122,96 @@ footer{text-align:center;padding:34px 20px;border-top:1px solid var(--border);fo
 footer .heart{color:var(--pink)}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
 .reveal.vis{opacity:1;transform:none}
-@media(max-width:640px){nav ul{display:none}}
+
+/* ---- resume CTA button ---- */
+.btn-resume{font-family:var(--mono);font-size:13px;font-weight:500;color:#0a0e14;
+  background:linear-gradient(135deg,var(--teal),var(--purple));border:none;border-radius:8px;
+  padding:9px 18px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  box-shadow:0 0 0 0 rgba(93,202,165,.5);animation:pulseGlow 2.4s ease-in-out infinite;transition:transform .2s}
+.btn-resume:hover{transform:translateY(-2px) scale(1.03)}
+.btn-resume::before{content:'';width:7px;height:7px;border-radius:50%;background:#0a0e14;opacity:.7}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(93,202,165,.45)}50%{box-shadow:0 0 18px 3px rgba(127,119,221,.55)}}
+nav .nav-right{display:flex;align-items:center;gap:20px}
+
+/* ---- preloader (neural awakening) ---- */
+#preloader{position:fixed;inset:0;z-index:9999;background:#0a0e14;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;transition:opacity .9s ease}
+#preloader.done{opacity:0;pointer-events:none}
+#preload-canvas{position:absolute;inset:0;width:100%;height:100%}
+.pl-center{position:relative;text-align:center;z-index:2}
+.pl-name{font-family:var(--mono);font-size:clamp(26px,6vw,52px);font-weight:700;letter-spacing:1px;
+  background:linear-gradient(135deg,var(--teal),var(--purple));-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;opacity:0;transition:opacity 1.1s ease 1s}
+.pl-name.show{opacity:1}
+.pl-status{font-family:var(--mono);font-size:clamp(11px,2.5vw,14px);color:var(--muted);margin-top:14px;min-height:20px}
+.pl-skip{position:absolute;bottom:26px;font-family:var(--mono);font-size:12px;color:var(--dim);
+  background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;transition:.2s}
+.pl-skip:hover{color:var(--teal);border-color:var(--teal)}
+body.loading{overflow:hidden}
+
+/* ---- responsive ---- */
+@media(max-width:880px){
+  section{padding:80px 22px}
+  nav{padding:12px 18px}
+  nav ul{gap:16px}
+  nav ul a{font-size:12px}
+  .exp-head .pname{font-size:14px}
+}
+@media(max-width:720px){
+  .exp-body{grid-template-columns:1fr}
+  .exp-chart{border-left:none;border-top:1px solid var(--border)}
+  .exp-chart canvas{height:120px}
+}
+@media(max-width:640px){
+  nav ul{display:none}
+  nav{padding:11px 16px}
+  nav .logo{font-size:13px}
+  section{padding:68px 18px}
+  .sec-title{font-size:24px;margin-bottom:28px}
+  .hero-inner .pre{font-size:12px}
+  .hero-links{flex-wrap:wrap;gap:10px}
+  .hero-links a,.btn-resume{font-size:12px;padding:8px 14px}
+  .metrics{gap:18px}
+  .metric .val{font-size:20px}
+  .exp-detail.open{max-height:640px}
+  .cell-in,.cell-out{font-size:12px}
+  .ckpt-list{margin-left:4px;padding-left:22px}
+  .ckpt::before{left:-28px}
+  #term-out,.term-in input,.term-in .ps{font-size:12px}
+  .pl-skip{bottom:18px}
+}
+@media(max-width:380px){
+  .hero-inner h1{font-size:34px}
+  .skill-groups{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important;transition-duration:.001s!important}
+}
 </style>
 </head>
-<body>
+<body class="loading">
+
+<div id="preloader">
+  <canvas id="preload-canvas"></canvas>
+  <div class="pl-center">
+    <div class="pl-name" id="pl-name">VEDANT KALE</div>
+    <div class="pl-status" id="pl-status">initializing neural net<span class="cursor">_</span></div>
+  </div>
+  <button class="pl-skip" id="pl-skip">skip intro →</button>
+</div>
 
 <nav>
   <div class="logo">vedant<span>@</span>portfolio<span>:~$</span></div>
-  <ul>
-    <li><a href="#about"><span class="idx">01.</span>about</a></li>
-    <li><a href="#skills"><span class="idx">02.</span>skills</a></li>
-    <li><a href="#experiments"><span class="idx">03.</span>experiments</a></li>
-    <li><a href="#checkpoints"><span class="idx">04.</span>checkpoints</a></li>
-    <li><a href="#contact"><span class="idx">05.</span>contact</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul>
+      <li><a href="#about"><span class="idx">01.</span>about</a></li>
+      <li><a href="#skills"><span class="idx">02.</span>skills</a></li>
+      <li><a href="#experiments"><span class="idx">03.</span>experiments</a></li>
+      <li><a href="#checkpoints"><span class="idx">04.</span>checkpoints</a></li>
+      <li><a href="#contact"><span class="idx">05.</span>contact</a></li>
+    </ul>
+    <a class="btn-resume" href="https://drive.google.com/file/d/1sVc56E4tjoAiJ4GNNUHdchiIDdnuyAgP/view?usp=sharing" target="_blank" rel="noopener">résumé.pdf</a>
+  </div>
 </nav>
 
 <section id="hero">
@@ -149,6 +225,7 @@ footer .heart{color:var(--pink)}
       <a href="https://www.linkedin.com/in/vedant-kale-b1836a25a/" target="_blank" rel="noopener">linkedin</a>
       <a href="https://leetcode.com/u/vedantukale29/" target="_blank" rel="noopener">leetcode</a>
       <a href="mailto:vedantukale29@gmail.com">email</a>
+      <a class="btn-resume" href="https://drive.google.com/file/d/1sVc56E4tjoAiJ4GNNUHdchiIDdnuyAgP/view?usp=sharing" target="_blank" rel="noopener">view résumé</a>
     </div>
   </div>
   <div class="scroll-cue">▼ scroll to explore</div>
@@ -311,6 +388,48 @@ footer .heart{color:var(--pink)}
 (function(){
 "use strict";
 
+/* ---------- neural awakening preloader ---------- */
+var pre=document.getElementById('preloader'),pc=document.getElementById('preload-canvas'),
+    px=pc.getContext('2d'),plName=document.getElementById('pl-name'),
+    plStatus=document.getElementById('pl-status'),plSkip=document.getElementById('pl-skip');
+var pw,ph,pnodes=[],praf,pdone=false;
+function presize(){pw=pc.width=window.innerWidth;ph=pc.height=window.innerHeight;}
+presize();window.addEventListener('resize',presize);
+var PN=Math.min(70,Math.floor(window.innerWidth/20));
+for(var k=0;k<PN;k++)pnodes.push({x:Math.random()*pw,y:Math.random()*ph,
+  vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,ignite:Math.random()*2.4,phase:Math.random()*6.28});
+var pStart=performance.now();
+var msgs=['initializing neural net','loading weights','connecting layers','model ready'];
+function paint(now){
+  var t=(now-pStart)/1000;
+  px.clearRect(0,0,pw,ph);
+  var i,j,a,b,d;
+  for(i=0;i<pnodes.length;i++){a=pnodes[i];a.x+=a.vx;a.y+=a.vy;
+    if(a.x<0||a.x>pw)a.vx*=-1;if(a.y<0||a.y>ph)a.vy*=-1;}
+  for(i=0;i<pnodes.length;i++)for(j=i+1;j<pnodes.length;j++){
+    a=pnodes[i];b=pnodes[j];if(t<a.ignite||t<b.ignite)continue;
+    d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<150){px.strokeStyle='rgba(127,119,221,'+(.45*(1-d/150)).toFixed(3)+')';
+      px.lineWidth=1;px.beginPath();px.moveTo(a.x,a.y);px.lineTo(b.x,b.y);px.stroke();}}
+  for(i=0;i<pnodes.length;i++){a=pnodes[i];if(t<a.ignite)continue;
+    var g=(Math.sin(t*2.5+a.phase)+1)/2;
+    px.fillStyle='rgba(93,202,165,'+(.4+g*.6).toFixed(2)+')';
+    px.beginPath();px.arc(a.x,a.y,2+g*1.8,0,7);px.fill();}
+  var idx=Math.min(msgs.length-1,Math.floor(t/0.9));
+  plStatus.innerHTML=msgs[idx]+'<span class="cursor">_</span>';
+  if(t>2.4)plName.classList.add('show');
+  if(t<3.7&&!pdone)praf=requestAnimationFrame(paint);
+  else finish();
+}
+function finish(){
+  if(pdone)return;pdone=true;cancelAnimationFrame(praf);
+  pre.classList.add('done');document.body.classList.remove('loading');
+  setTimeout(function(){if(pre&&pre.parentNode)pre.parentNode.removeChild(pre);},950);
+}
+plSkip.addEventListener('click',finish);
+praf=requestAnimationFrame(paint);
+
+/* ---------- hero background neural net ---------- */
 var cv=document.getElementById('neural-bg'),ctx=cv.getContext('2d'),nodes=[],mx=-9e3,my=-9e3,W,H;
 function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
 resize();window.addEventListener('resize',resize);
