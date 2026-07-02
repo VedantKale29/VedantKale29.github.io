@@ -133,20 +133,25 @@ footer .heart{color:var(--pink)}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(93,202,165,.45)}50%{box-shadow:0 0 18px 3px rgba(127,119,221,.55)}}
 nav .nav-right{display:flex;align-items:center;gap:20px}
 
-/* ---- preloader (neural awakening) ---- */
-#preloader{position:fixed;inset:0;z-index:9999;background:#0a0e14;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;transition:opacity .9s ease}
+/* ---- preloader (ML pipeline) ---- */
+#preloader{position:fixed;inset:0;z-index:9999;background:#0a0e14;transition:opacity .9s ease}
 #preloader.done{opacity:0;pointer-events:none}
 #preload-canvas{position:absolute;inset:0;width:100%;height:100%}
-.pl-center{position:relative;text-align:center;z-index:2}
-.pl-name{font-family:var(--mono);font-size:clamp(26px,6vw,52px);font-weight:700;letter-spacing:1px;
+.pl-name{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;
+  font-family:var(--mono);font-size:clamp(26px,6vw,52px);font-weight:700;letter-spacing:2px;
   background:linear-gradient(135deg,var(--teal),var(--purple));-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;opacity:0;transition:opacity 1.1s ease 1s}
+  -webkit-text-fill-color:transparent;opacity:0;transition:opacity 1s ease}
 .pl-name.show{opacity:1}
-.pl-status{font-family:var(--mono);font-size:clamp(11px,2.5vw,14px);color:var(--muted);margin-top:14px;min-height:20px}
-.pl-skip{position:absolute;bottom:26px;font-family:var(--mono);font-size:12px;color:var(--dim);
-  background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;transition:.2s}
+.pl-hud{position:absolute;left:50%;bottom:60px;transform:translateX(-50%);width:min(440px,84vw);text-align:center;z-index:3}
+.pl-metrics{font-family:var(--mono);font-size:12px;color:var(--teal);min-height:16px;margin-bottom:10px;letter-spacing:.4px}
+.pl-stage{font-family:var(--mono);font-size:clamp(13px,3vw,16px);color:var(--text);margin-bottom:12px}
+.pl-stage .pl-idx{color:var(--purple);margin-right:9px}
+.pl-bar{height:3px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.pl-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--purple));transition:width .12s linear}
+.pl-skip{position:absolute;bottom:20px;right:20px;font-family:var(--mono);font-size:12px;color:var(--dim);
+  background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;cursor:pointer;transition:.2s;z-index:3}
 .pl-skip:hover{color:var(--teal);border-color:var(--teal)}
+#preloader .cursor{display:inline;width:auto;background:none;color:var(--teal);animation:blink 1s steps(1) infinite}
 body.loading{overflow:hidden}
 
 /* ---- responsive ---- */
@@ -193,9 +198,11 @@ body.loading{overflow:hidden}
 
 <div id="preloader">
   <canvas id="preload-canvas"></canvas>
-  <div class="pl-center">
-    <div class="pl-name" id="pl-name">VEDANT KALE</div>
-    <div class="pl-status" id="pl-status">initializing neural net<span class="cursor">_</span></div>
+  <div class="pl-name" id="pl-name">VEDANT KALE</div>
+  <div class="pl-hud">
+    <div class="pl-metrics" id="pl-metrics"></div>
+    <div class="pl-stage" id="pl-stage"><span class="pl-idx">01</span>collecting data<span class="cursor">_</span></div>
+    <div class="pl-bar"><div class="pl-bar-fill" id="pl-bar-fill"></div></div>
   </div>
   <button class="pl-skip" id="pl-skip">skip intro →</button>
 </div>
@@ -388,38 +395,97 @@ body.loading{overflow:hidden}
 (function(){
 "use strict";
 
-/* ---------- neural awakening preloader ---------- */
+/* ---------- ML pipeline preloader ---------- */
 var pre=document.getElementById('preloader'),pc=document.getElementById('preload-canvas'),
     px=pc.getContext('2d'),plName=document.getElementById('pl-name'),
-    plStatus=document.getElementById('pl-status'),plSkip=document.getElementById('pl-skip');
-var pw,ph,pnodes=[],praf,pdone=false;
-function presize(){pw=pc.width=window.innerWidth;ph=pc.height=window.innerHeight;}
-presize();window.addEventListener('resize',presize);
-var PN=Math.min(70,Math.floor(window.innerWidth/20));
-for(var k=0;k<PN;k++)pnodes.push({x:Math.random()*pw,y:Math.random()*ph,
-  vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,ignite:Math.random()*2.4,phase:Math.random()*6.28});
+    plStage=document.getElementById('pl-stage'),plMetrics=document.getElementById('pl-metrics'),
+    plBar=document.getElementById('pl-bar-fill'),plSkip=document.getElementById('pl-skip');
+var pw,ph,cx,cy,layers=[],edges=[],particles=[],praf,pdone=false,DURATION=6.0,lx,gap;
+function lerp(a,b,k){return a+(b-a)*k;}
+function buildNet(){
+  pw=pc.width=window.innerWidth;ph=pc.height=window.innerHeight;
+  cx=pw/2;cy=ph*0.44;
+  var sizes=[5,7,7,4],span=Math.min(pw*0.66,540),vspan=Math.min(ph*0.46,300);
+  lx=cx-span/2;gap=span/(sizes.length-1);
+  layers=[];
+  for(var l=0;l<sizes.length;l++){
+    var n=sizes[l],col=[],x=lx+l*gap,vg=n>1?vspan/(n-1):0;
+    for(var i=0;i<n;i++)col.push({x:x,y:n>1?cy-vspan/2+i*vg:cy});
+    layers.push(col);
+  }
+  edges=[];
+  for(var l2=0;l2<layers.length-1;l2++)for(var a=0;a<layers[l2].length;a++)for(var b=0;b<layers[l2+1].length;b++)
+    edges.push({a:layers[l2][a],b:layers[l2+1][b],seed:Math.random()});
+  particles=[];
+  var inp=layers[0];
+  for(var p=0;p<44;p++){var tgt=inp[Math.floor(Math.random()*inp.length)];
+    particles.push({sx:-30-Math.random()*pw*0.2,sy:Math.random()*ph,tx:tgt.x,ty:tgt.y,t0:Math.random()*1.0});}
+}
+buildNet();window.addEventListener('resize',function(){if(!pdone)buildNet();});
 var pStart=performance.now();
-var msgs=['initializing neural net','loading weights','connecting layers','model ready'];
+var STAGES=[
+ {t:0,   id:'01',label:'collecting data'},
+ {t:1.3, id:'02',label:'preprocessing features'},
+ {t:2.3, id:'03',label:'building neural network'},
+ {t:3.5, id:'04',label:'training model'},
+ {t:5.3, id:'05',label:'model deployed'}
+];
 function paint(now){
-  var t=(now-pStart)/1000;
+  var t=(now-pStart)/1000,i;
   px.clearRect(0,0,pw,ph);
-  var i,j,a,b,d;
-  for(i=0;i<pnodes.length;i++){a=pnodes[i];a.x+=a.vx;a.y+=a.vy;
-    if(a.x<0||a.x>pw)a.vx*=-1;if(a.y<0||a.y>ph)a.vy*=-1;}
-  for(i=0;i<pnodes.length;i++)for(j=i+1;j<pnodes.length;j++){
-    a=pnodes[i];b=pnodes[j];if(t<a.ignite||t<b.ignite)continue;
-    d=Math.hypot(a.x-b.x,a.y-b.y);
-    if(d<150){px.strokeStyle='rgba(127,119,221,'+(.45*(1-d/150)).toFixed(3)+')';
-      px.lineWidth=1;px.beginPath();px.moveTo(a.x,a.y);px.lineTo(b.x,b.y);px.stroke();}}
-  for(i=0;i<pnodes.length;i++){a=pnodes[i];if(t<a.ignite)continue;
-    var g=(Math.sin(t*2.5+a.phase)+1)/2;
-    px.fillStyle='rgba(93,202,165,'+(.4+g*.6).toFixed(2)+')';
-    px.beginPath();px.arc(a.x,a.y,2+g*1.8,0,7);px.fill();}
-  var idx=Math.min(msgs.length-1,Math.floor(t/0.9));
-  plStatus.innerHTML=msgs[idx]+'<span class="cursor">_</span>';
-  if(t>2.4)plName.classList.add('show');
-  if(t<3.7&&!pdone)praf=requestAnimationFrame(paint);
-  else finish();
+  var netAlpha=t>5.3?Math.max(0,1-(t-5.3)/0.7):1;
+  px.globalAlpha=netAlpha;
+
+  if(t<2.5){
+    for(i=0;i<particles.length;i++){var pt=particles[i];
+      var k=Math.min(1,Math.max(0,(t-pt.t0)/0.9));if(k<=0)continue;
+      var e=1-Math.pow(1-k,3),x=lerp(pt.sx,pt.tx,e),y=lerp(pt.sy,pt.ty,e);
+      px.fillStyle='rgba(240,153,123,'+(0.7*(1-e)+0.25).toFixed(2)+')';
+      px.beginPath();px.arc(x,y,2.2,0,7);px.fill();
+      if(e>0.6){px.strokeStyle='rgba(240,153,123,'+(0.3*(1-e)).toFixed(2)+')';px.lineWidth=1;
+        px.beginPath();px.moveTo(x-9,y);px.lineTo(x,y);px.stroke();}
+    }
+  }
+
+  var buildK=Math.min(1,Math.max(0,(t-2.3)/1.2));
+  if(buildK>0){
+    for(i=0;i<edges.length;i++){var ed=edges[i],ek=Math.min(1,buildK*1.4-ed.seed*0.4);if(ek<=0)continue;
+      px.strokeStyle='rgba(127,119,221,'+(0.15*ek).toFixed(3)+')';px.lineWidth=1;
+      px.beginPath();px.moveTo(ed.a.x,ed.a.y);px.lineTo(lerp(ed.a.x,ed.b.x,ek),lerp(ed.a.y,ed.b.y,ek));px.stroke();}
+  }
+
+  if(t>3.5&&t<5.4){
+    for(i=0;i<edges.length;i++){var e2=edges[i];if(e2.seed>0.55)continue;
+      var pp=((t-3.5)*0.9+e2.seed*3)%1,x2=lerp(e2.a.x,e2.b.x,pp),y2=lerp(e2.a.y,e2.b.y,pp);
+      px.fillStyle='rgba(93,202,165,'+(0.9*(1-Math.abs(pp-0.5)*1.4)).toFixed(2)+')';
+      px.beginPath();px.arc(x2,y2,2,0,7);px.fill();}
+  }
+
+  for(var l=0;l<layers.length;l++){
+    var la=l===0?Math.min(1,t/0.6):Math.min(1,Math.max(0,(t-2.3-l*0.15)/0.6));
+    if(la<=0)continue;
+    for(i=0;i<layers[l].length;i++){var nd=layers[l][i];
+      var tr=(t>3.5&&t<5.4)?(Math.sin(t*4+l+i)+1)/2:0.4;
+      var isOut=l===layers.length-1,col=(isOut&&t>5.0)?'93,202,165':'127,119,221';
+      px.fillStyle='rgba('+col+','+(la*(0.5+tr*0.5)).toFixed(2)+')';
+      px.beginPath();px.arc(nd.x,nd.y,isOut?4.5:3.4,0,7);px.fill();
+      if(t>3.5&&t<5.4){px.strokeStyle='rgba('+col+','+(la*tr*0.4).toFixed(2)+')';px.lineWidth=1;
+        px.beginPath();px.arc(nd.x,nd.y,6+tr*3,0,7);px.stroke();}
+    }
+  }
+  px.globalAlpha=1;
+
+  var st=STAGES[0];for(var s=0;s<STAGES.length;s++)if(t>=STAGES[s].t)st=STAGES[s];
+  plStage.innerHTML='<span class="pl-idx">'+st.id+'</span>'+st.label+(t<5.3?'<span class="cursor">_</span>':' ✓');
+  plBar.style.width=(Math.min(1,t/DURATION)*100).toFixed(1)+'%';
+  if(t>3.5&&t<5.3){var tk=(t-3.5)/1.8,ep=Math.round(1+tk*29),
+      loss=(0.9*Math.exp(-tk*2.6)+0.02).toFixed(3),acc=(70+tk*27.9).toFixed(1);
+    plMetrics.textContent='epoch '+ep+'/30 · loss '+loss+' · acc '+acc+'%';}
+  else if(t>=5.3)plMetrics.textContent='accuracy 97.9% · f1 0.98 · ready';
+  else plMetrics.textContent='';
+
+  if(t>5.4)plName.classList.add('show');
+  if(t<DURATION&&!pdone)praf=requestAnimationFrame(paint);else finish();
 }
 function finish(){
   if(pdone)return;pdone=true;cancelAnimationFrame(praf);
